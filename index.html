@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>元氣精神｜周哈里窗自我探索測驗（含雷達圖與匯出）</title>
+<title>元氣精神｜周哈里窗自我探索測驗（亮色強化版）</title>
 <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
 <meta name="theme-color" content="#0f1220">
 <style>
@@ -16,7 +16,6 @@
   body{margin:0;font-family:ui-sans-serif,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial;color:var(--ink);background:linear-gradient(145deg,#0b0e1a 0%,#141833 60%,#0f1220 100%)}
   .topbar{position:sticky;top:0;z-index:5;background:rgba(10,12,24,.7);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
   .brand{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px}
-  .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:conic-gradient(from 220deg,#7cf7e6,#6eb6ff,#b07cf6,#ffd36e,#7cf7e6);color:#0c1120;font-weight:900;box-shadow:0 4px 18px rgba(0,0,0,.35)}
   .logotxt{font-weight:900;letter-spacing:.04em;background:linear-gradient(90deg,#b9fff6,#b8c9ff,#e0d2ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:18px}
   .subtitle{color:var(--muted);font-size:12px}
   header{padding:16px 16px 0;text-align:center}
@@ -33,7 +32,9 @@
   .b-open{background:color-mix(in oklab, var(--open) 25%, transparent);color:var(--open);border:1px solid color-mix(in oklab, var(--open) 70%, transparent)}
   .b-hidden{background:color-mix(in oklab, var(--hidden) 25%, transparent);color:var(--hidden);border:1px solid color-mix(in oklab, var(--hidden) 70%, transparent)}
   .b-blind{background:color-mix(in oklab, var(--blind) 25%, transparent);color:var(--blind);border:1px solid color-mix(in oklab, var(--blind) 70%, transparent)}
-  .b-unknown{background:color-mix(in oklab, var(--unknown) 25%, transparent);color:#603e00;border:1px solid color-mix(in oklab, var(--unknown) 70%, transparent)}
+  .b-unknown{background:color-mix(in oklab, var(--unknown) 60%, transparent);color:#3a2a00;border:1px solid rgba(255,211,110,0.6);text-shadow:0 0 2px rgba(255,255,255,0.25)}
+  .q[data-type="unknown"]{background:linear-gradient(135deg,#1c1f38 0%,#1a1d33 100%);border:1px solid rgba(255,211,110,0.25)}
+  .q[data-type="unknown"] h3{color:#fff8e3}
   .scale{display:flex;gap:8px;flex-wrap:wrap}
   .opt{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:10px;border:1px solid #2a2f55;cursor:pointer;user-select:none}
   .opt input{accent-color:#4bdab9}
@@ -206,6 +207,7 @@
   function renderQuestion(idx,q){
     const wrap=document.createElement('div'); wrap.className='q';
     const [label,cls]=badgeMap[q.type];
+    wrap.setAttribute('data-type', q.type);
     wrap.innerHTML=`
       <h3>${idx+1}. ${q.t}<span class="badge ${cls}">${label}</span></h3>
       <div class="scale" role="radiogroup" aria-label="Likert scale">
