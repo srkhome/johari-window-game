@@ -14,7 +14,6 @@
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:ui-sans-serif,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial;color:var(--ink);background:linear-gradient(145deg,#0b0e1a 0%,#141833 60%,#0f1220 100%)}
-  /* Header / Logo */
   .topbar{position:sticky;top:0;z-index:5;background:rgba(10,12,24,.7);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
   .brand{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px}
   .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:conic-gradient(from 220deg,#7cf7e6,#6eb6ff,#b07cf6,#ffd36e,#7cf7e6);color:#0c1120;font-weight:900;box-shadow:0 4px 18px rgba(0,0,0,.35)}
@@ -42,12 +41,12 @@
   button{background:linear-gradient(135deg,#2fd0c3,#6eb6ff);color:#08111d;border:0;padding:10px 16px;border-radius:12px;font-weight:700;cursor:pointer}
   button[disabled]{opacity:.45;cursor:not-allowed}
   .ghost{background:#232743;color:#d7dcff}
-  .msg{color:var(--danger);font-size:13px;margin-top:8px;display:none}
+  .msg{color:#ff8888;font-size:13px;margin-top:8px;display:none}
   .results{display:grid;gap:16px}
   .row{display:grid;grid-template-columns:160px 1fr 80px;gap:12px;align-items:center}
   .meter{height:12px;background:#232743;border-radius:8px;overflow:hidden}
   .meter>i{display:block;height:100%;width:0%}
-  .tag{font-size:13px;color:var(--muted)}
+  .tag{font-size:13px;color:#a9b0d9}
   .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#232743;margin-right:8px}
   .tips{line-height:1.7}
   .exportbar{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 4px}
@@ -142,7 +141,6 @@
     </div>
   </div>
 
-  <!-- Libraries -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -261,7 +259,7 @@
 
     setMeter('Open',pct.open,`${sums.open}/50（平均 ${avg.open.toFixed(2)}）`);
     setMeter('Hidden',pct.hidden,`${sums.hidden}/50（平均 ${avg.hidden.toFixed(2)}）`);
-    setMeter('Blind',pct.blind,`${sums.blind.toFixed(0)}/50（平均 ${avg.blind.toFixed(2)}）`);
+    setMeter('Blind',pct.blind,`${sums.blind}/50（平均 ${avg.blind.toFixed(2)}）`);
     setMeter('Unknown',pct.unknown,`${sums.unknown}/50（平均 ${avg.unknown.toFixed(2)}）`);
 
     document.getElementById('summary').innerHTML = buildSummary(avg, sums);
@@ -294,23 +292,23 @@
     if(blindspot>=3.6) adv.push("每月一次 360 回饋，請 3 位熟悉你的人各給 1 條具體建議。");
     if(exploration<3.6)adv.push("做 14 天微挑戰（每天 15 分鐘）探索一個新領域。");
 
-    const chips = \`
+    const chips = `
       <div class="tag" style="margin:8px 0 2px">你的指數（1～5）：</div>
       <div class="pill">開放 ${openness.toFixed(2)}</div>
       <div class="pill">防衛 ${defense.toFixed(2)}</div>
       <div class="pill">盲點 ${blindspot.toFixed(2)}</div>
-      <div class="pill">探索 ${exploration.toFixed(2)}</div>\`;
+      <div class="pill">探索 ${exploration.toFixed(2)}</div>`;
 
     const suggest = adv.length
-      ? \`<div class="tips" style="margin-top:10px"><strong>行動建議：</strong><ol>${adv.map(a=>\`<li>${a}</li>\`).join('')}</ol></div>\`
-      : \`<div class="tips" style="margin-top:10px">整體相當不錯！保持開放分享，持續以小步快跑探索未知。</div>\`;
+      ? `<div class="tips" style="margin-top:10px"><strong>行動建議：</strong><ol>${adv.map(a=>`<li>${a}</li>`).join('')}</ol></div>`
+      : `<div class="tips" style="margin-top:10px">整體相當不錯！保持開放分享，持續以小步快跑探索未知。</div>`;
 
-    return \`
+    return `
       <p>你的整體傾向為 <strong>「${archetype}」</strong>。</p>
       ${chips}
       <p style="margin:10px 0 6px"><strong>解讀：</strong>開放越高代表越透明、越容易建立信任；防衛與盲點越高代表需要加強信任與覺察；探索越高代表未知區縮小、潛能被開發。</p>
       ${suggest}
-      <p class="tag" style="margin-top:6px">（計分：各象限滿分 50；平均 = 總分 ÷ 10。探索 = 6 − 未知平均。）</p>\`;
+      <p class="tag" style="margin-top:6px">（計分：各象限滿分 50；平均 = 總分 ÷ 10。探索 = 6 − 未知平均。）</p>`;
   }
 
   function renderRadar(data){
@@ -319,11 +317,10 @@
     radarInstance=new Chart(ctx,{
       type:'radar',
       data:{labels:['開放','防衛','盲點','探索'],datasets:[{label:'指數（0～5）',data:[data.open,data.defense,data.blind,data.exploration],fill:true,backgroundColor:'rgba(110,183,255,0.20)',borderColor:'rgba(110,183,255,0.95)',pointBackgroundColor:'#e9ecff',pointBorderColor:'rgba(110,183,255,1)'}]},
-      options:{responsive:true,scales:{r:{min:0,max:5,ticks:{stepSize:1,color:'#a9b0d9'},grid:{color:'rgba(255,255,255,.15)'},angleLines:{color:'rgba(255,255,255,.18)'},pointLabels:{color:'#e9ecff',font:{size:12}}}},plugins:{legend:{labels:{color:'#e9ecff'}},tooltip:{callbacks:{label:(ctx)=>\`${ctx.label}: ${ctx.formattedValue}\`}}}}
+      options:{responsive:true,scales:{r:{min:0,max:5,ticks:{stepSize:1,color:'#a9b0d9'},grid:{color:'rgba(255,255,255,.15)'},angleLines:{color:'rgba(255,255,255,.18)'},pointLabels:{color:'#e9ecff',font:{size:12}}}},plugins:{legend:{labels:{color:'#e9ecff'}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.formattedValue}`}}}}
     });
   }
 
-  // ---- 匯出（PNG / PDF / JSON） ----
   document.getElementById('btnPng').addEventListener('click', async ()=>{
     if(!lastResults){ alert('請先完成測驗。'); return; }
     resultCard.scrollIntoView({behavior:'instant', block:'start'});
