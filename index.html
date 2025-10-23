@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>元氣精神｜周哈里窗自我探索測驗（含雷達圖與匯出）</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<meta name="theme-color" content="#0f1220">
+<style>
+  :root{
+    --bg:#0f1220; --card:#171a2b; --ink:#e9ecff; --muted:#a9b0d9;
+    --open:#59d390; --hidden:#b07cf6; --blind:#6eb6ff; --unknown:#ffd36e;
+    --accent:#6ee7d8; --danger:#ff8888; --brand:#8A7CFF;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,-apple-system,"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial;color:var(--ink);background:linear-gradient(145deg,#0b0e1a 0%,#141833 60%,#0f1220 100%)}
+  /* Header / Logo */
+  .topbar{position:sticky;top:0;z-index:5;background:rgba(10,12,24,.7);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+  .brand{max-width:1100px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;gap:12px}
+  .logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:conic-gradient(from 220deg,#7cf7e6,#6eb6ff,#b07cf6,#ffd36e,#7cf7e6);color:#0c1120;font-weight:900;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+  .logotxt{font-weight:900;letter-spacing:.04em;background:linear-gradient(90deg,#b9fff6,#b8c9ff,#e0d2ff);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:18px}
+  .subtitle{color:var(--muted);font-size:12px}
+  header{padding:16px 16px 0;text-align:center}
+  h1{font-size:clamp(22px,4vw,28px);margin:6px 0 6px}
+  .sub{color:var(--muted);font-size:14px}
+  .wrap{max-width:980px;margin:18px auto 28px;padding:0 14px}
+  .card{background:rgba(23,26,43,.82);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+  .bar{height:10px;background:#232743;border-radius:999px;overflow:hidden;margin:10px 0 16px}
+  .bar>i{display:block;height:100%;width:0%;background:linear-gradient(90deg,#59d390,#6eb6ff);transition:width .35s}
+  .grid{display:grid;gap:14px}
+  .q{border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;background:#121528}
+  .q h3{margin:0 0 10px;font-size:15px;line-height:1.4}
+  .badge{font-size:12px;padding:2px 8px;border-radius:999px;margin-left:6px}
+  .b-open{background:color-mix(in oklab, var(--open) 25%, transparent);color:var(--open);border:1px solid color-mix(in oklab, var(--open) 70%, transparent)}
+  .b-hidden{background:color-mix(in oklab, var(--hidden) 25%, transparent);color:var(--hidden);border:1px solid color-mix(in oklab, var(--hidden) 70%, transparent)}
+  .b-blind{background:color-mix(in oklab, var(--blind) 25%, transparent);color:var(--blind);border:1px solid color-mix(in oklab, var(--blind) 70%, transparent)}
+  .b-unknown{background:color-mix(in oklab, var(--unknown) 25%, transparent);color:#603e00;border:1px solid color-mix(in oklab, var(--unknown) 70%, transparent)}
+  .scale{display:flex;gap:8px;flex-wrap:wrap}
+  .opt{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border-radius:10px;border:1px solid #2a2f55;cursor:pointer;user-select:none}
+  .opt input{accent-color:#4bdab9}
+  .foot{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:14px}
+  button{background:linear-gradient(135deg,#2fd0c3,#6eb6ff);color:#08111d;border:0;padding:10px 16px;border-radius:12px;font-weight:700;cursor:pointer}
+  button[disabled]{opacity:.45;cursor:not-allowed}
+  .ghost{background:#232743;color:#d7dcff}
+  .msg{color:var(--danger);font-size:13px;margin-top:8px;display:none}
+  .results{display:grid;gap:16px}
+  .row{display:grid;grid-template-columns:160px 1fr 80px;gap:12px;align-items:center}
+  .meter{height:12px;background:#232743;border-radius:8px;overflow:hidden}
+  .meter>i{display:block;height:100%;width:0%}
+  .tag{font-size:13px;color:var(--muted)}
+  .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#232743;margin-right:8px}
+  .tips{line-height:1.7}
+  .exportbar{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 4px}
+  .exportbar button{background:linear-gradient(135deg,#b07cf6,#6eb6ff)}
+  @media (min-width:700px){ .grid{grid-template-columns:1fr 1fr} }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="元氣精神" width="36" height="36" style="border-radius:9px">
+      <div>
+        <div class="logotxt">元氣精神</div>
+        <div class="subtitle">周哈里窗自我探索測驗</div>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <h1>周哈里窗｜自我探索測驗</h1>
+    <div class="sub">40 題量表（1～5 分）｜完成後顯示四象限分數、雷達圖與總和評量｜支援結果匯出</div>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <div>進度</div>
+      <div class="bar"><i id="progress"></i></div>
+      <div id="pageBox" class="grid"></div>
+
+      <div class="foot">
+        <div><button class="ghost" id="prevBtn">← 上一頁</button></div>
+        <div>
+          <span id="pageInfo" class="tag">第 1 / 4 頁</span>
+          <button id="nextBtn">下一頁 →</button>
+          <button id="finishBtn" style="display:none">查看結果 ✅</button>
+        </div>
+      </div>
+      <div id="warn" class="msg">還有題目未作答，請完成本頁所有題目。</div>
+    </div>
+
+    <div id="resultCard" class="card" style="display:none; margin-top:16px">
+      <h2 style="margin:0 0 6px">結果與總和評量</h2>
+      <div class="tag">每象限滿分 50 分（10 題 × 5 分）。下方同時顯示平均分長條與雷達圖。</div>
+
+      <div class="results" style="margin-top:10px">
+        <div class="row">
+          <strong>開放我 Open</strong>
+          <div class="meter"><i id="mOpen" style="background:var(--open)"></i></div>
+          <div id="sOpen" style="text-align:right"></div>
+        </div>
+        <div class="row">
+          <strong>隱藏我 Hidden</strong>
+          <div class="meter"><i id="mHidden" style="background:var(--hidden)"></i></div>
+          <div id="sHidden" style="text-align:right"></div>
+        </div>
+        <div class="row">
+          <strong>盲目我 Blind</strong>
+          <div class="meter"><i id="mBlind" style="background:var(--blind)"></i></div>
+          <div id="sBlind" style="text-align:right"></div>
+        </div>
+        <div class="row">
+          <strong>未知我 Unknown</strong>
+          <div class="meter"><i id="mUnknown" style="background:var(--unknown)"></i></div>
+          <div id="sUnknown" style="text-align:right"></div>
+        </div>
+      </div>
+
+      <hr style="border-color:#262a4a; margin:16px 0">
+      <h3 style="margin:0 0 8px">雷達圖（指數 0～5）</h3>
+      <div class="tag" style="margin-bottom:6px">四軸：開放、<u>防衛</u>、<u>盲點</u>、探索。防衛／盲點為「越低越好」，探索 = 6 − 未知平均。</div>
+      <canvas id="radarChart" aria-label="Johari Radar" role="img" height="280"></canvas>
+
+      <div style="margin-top:12px">
+        <div class="pill">開放指數 = Open 平均</div>
+        <div class="pill">防衛指數 = Hidden 平均</div>
+        <div class="pill">盲點指數 = Blind 平均</div>
+        <div class="pill">探索指數 = 6 − Unknown 平均</div>
+      </div>
+
+      <hr style="border-color:#262a4a; margin:16px 0">
+      <h3 style="margin:0 6px 6px 0; display:inline-block">你的總和評量</h3>
+
+      <div class="exportbar">
+        <button id="btnPng">匯出結果 PNG</button>
+        <button id="btnPdf">匯出結果 PDF</button>
+        <button id="btnJson" class="ghost">下載 JSON（分數與指數）</button>
+      </div>
+
+      <div id="summary" class="tips" style="margin-top:6px"></div>
+      <hr style="border-color:#262a4a; margin:16px 0">
+      <div class="tag">提示：此工具僅供自我覺察與團隊對話，不做臨床診斷之用。</div>
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script>
+  const bank = [
+    {t:"我樂於和他人分享自己的想法與感受。",type:"open"},
+    {t:"我對自己的優點有清楚的認識。",type:"open"},
+    {t:"我能坦率地承認自己的錯誤。",type:"open"},
+    {t:"我常主動表達自己的需求或立場。",type:"open"},
+    {t:"我不害怕讓別人知道我的真實情緒。",type:"open"},
+    {t:"我能接受別人對我的回饋。",type:"open"},
+    {t:"我願意讓他人了解我正在經歷的事情。",type:"open"},
+    {t:"我知道哪些事情讓我充滿熱情。",type:"open"},
+    {t:"我知道自己在團隊中扮演的角色。",type:"open"},
+    {t:"即使別人不同意，我也會誠實表達想法。",type:"open"},
+    {t:"我傾向隱藏自己的感受，不輕易說出口。",type:"hidden"},
+    {t:"我常擔心被誤會而選擇沈默。",type:"hidden"},
+    {t:"我不容易表露脆弱的一面。",type:"hidden"},
+    {t:"我把壓力和煩惱藏在心裡。",type:"hidden"},
+    {t:"我不太喜歡讓人知道我的私生活。",type:"hidden"},
+    {t:"我難過時常裝作沒事。",type:"hidden"},
+    {t:"我會刻意掩飾自己的缺點。",type:"hidden"},
+    {t:"我避免談論讓我不舒服的話題。",type:"hidden"},
+    {t:"別人很難猜到我真正的想法。",type:"hidden"},
+    {t:"在我看來，「保留」比「坦白」更安全。",type:"hidden"},
+    {t:"別人曾提醒我一些我沒注意到的習慣。",type:"blind"},
+    {t:"別人形容的我與我自我認知常有落差。",type:"blind"},
+    {t:"我有時會因誤解而與人爭執。",type:"blind"},
+    {t:"我不太察覺自己的情緒反應。",type:"blind"},
+    {t:"別人比我更清楚我的優缺點。",type:"blind"},
+    {t:"我說話太直接，事後才發現別人不開心。",type:"blind"},
+    {t:"他人常指出我沒意識到的小錯誤。",type:"blind"},
+    {t:"我常被說其實比自己以為的更有能力。",type:"blind"},
+    {t:"我很少主動請人給我改進建議。",type:"blind"},
+    {t:"我對別人眼中的自己好奇但不確定。",type:"blind"},
+    {t:"我覺得自己有一些尚未被發現的才能。",type:"unknown"},
+    {t:"每次新挑戰都讓我看見新的自己。",type:"unknown"},
+    {t:"我相信人在不同階段會展現不同面貌。",type:"unknown"},
+    {t:"我有時會被自己意外的反應嚇到。",type:"unknown"},
+    {t:"我喜歡探索新的興趣領域。",type:"unknown"},
+    {t:"我覺得我尚未完全了解自己想成為誰。",type:"unknown"},
+    {t:"我在壓力下時常激發出意外的能力。",type:"unknown"},
+    {t:"我相信經驗會不斷拓展我的可能性。",type:"unknown"},
+    {t:"他人曾看見我未曾注意過的特質。",type:"unknown"},
+    {t:"我對「未來的我」充滿好奇與期待。",type:"unknown"},
+  ];
+
+  const perPage=10; let page=0; const answers=new Map();
+  let radarInstance=null, lastResults=null;
+
+  const pageBox=document.getElementById('pageBox');
+  const progress=document.getElementById('progress');
+  const pageInfo=document.getElementById('pageInfo');
+  const prevBtn=document.getElementById('prevBtn');
+  const nextBtn=document.getElementById('nextBtn');
+  const finishBtn=document.getElementById('finishBtn');
+  const warn=document.getElementById('warn');
+  const resultCard=document.getElementById('resultCard');
+
+  const badgeMap={open:['開放我','b-open'],hidden:['隱藏我','b-hidden'],blind:['盲目我','b-blind'],unknown:['未知我','b-unknown']};
+
+  function renderQuestion(idx,q){
+    const wrap=document.createElement('div'); wrap.className='q';
+    const [label,cls]=badgeMap[q.type];
+    wrap.innerHTML=`
+      <h3>${idx+1}. ${q.t}<span class="badge ${cls}">${label}</span></h3>
+      <div class="scale" role="radiogroup" aria-label="Likert scale">
+        ${[1,2,3,4,5].map(v=>`
+          <label class="opt">
+            <input type="radio" name="q${idx}" value="${v}" ${answers.get(idx)===v?'checked':''}>
+            <span>${v}</span>
+            <span class="tag">${['完全不同意','有點不同意','普通','同意','非常同意'][v-1]}</span>
+          </label>`).join('')}
+      </div>`;
+    wrap.querySelectorAll('input[type=radio]').forEach(r=>{
+      r.addEventListener('change',e=>{answers.set(idx,Number(e.target.value));updateProgress();warn.style.display='none';checkPageFilled();});
+    });
+    return wrap;
+  }
+
+  function renderPage(){
+    pageBox.innerHTML='';
+    const start=page*perPage;
+    bank.slice(start,start+perPage).forEach((q,i)=>pageBox.appendChild(renderQuestion(start+i,q)));
+    pageInfo.textContent=`第 ${page+1} / ${Math.ceil(bank.length/perPage)} 頁`;
+    prevBtn.disabled=page===0;
+    nextBtn.style.display=page<3?'inline-block':'none';
+    finishBtn.style.display=page===3?'inline-block':'none';
+    checkPageFilled(); updateProgress();
+  }
+
+  function checkPageFilled(){
+    const s=page*perPage,e=s+perPage; let ok=true;
+    for(let i=s;i<e;i++){ if(!answers.has(i)){ ok=false; break; } }
+    nextBtn.disabled=(page<3)?!ok:false;
+    finishBtn.disabled=(page===3)?!ok:false;
+  }
+
+  function updateProgress(){
+    const pct=Math.round(answers.size/bank.length*100);
+    progress.style.width=pct+'%';
+  }
+
+  nextBtn.addEventListener('click',()=>{ if(!pageReady()){warn.style.display='block';return;} page++; renderPage(); });
+  prevBtn.addEventListener('click',()=>{ page=Math.max(0,page-1); renderPage(); });
+  function pageReady(){ const s=page*perPage,e=s+perPage; for(let i=s;i<e;i++){ if(!answers.has(i)) return false; } return true; }
+
+  finishBtn.addEventListener('click',()=>{
+    if(!pageReady()){warn.style.display='block';return;}
+    const sums={open:0,hidden:0,blind:0,unknown:0};
+    const counts={open:0,hidden:0,blind:0,unknown:0};
+    bank.forEach((q,i)=>{ const v=answers.get(i)??0; sums[q.type]+=v; counts[q.type]++; });
+    const avg={}; for(const k in sums){ avg[k]=sums[k]/counts[k]; }
+    const pct={}; for(const k in sums){ pct[k]=Math.round(sums[k]/50*100); }
+
+    setMeter('Open',pct.open,`${sums.open}/50（平均 ${avg.open.toFixed(2)}）`);
+    setMeter('Hidden',pct.hidden,`${sums.hidden}/50（平均 ${avg.hidden.toFixed(2)}）`);
+    setMeter('Blind',pct.blind,`${sums.blind.toFixed(0)}/50（平均 ${avg.blind.toFixed(2)}）`);
+    setMeter('Unknown',pct.unknown,`${sums.unknown}/50（平均 ${avg.unknown.toFixed(2)}）`);
+
+    document.getElementById('summary').innerHTML = buildSummary(avg, sums);
+
+    const indices={open:avg.open, defense:avg.hidden, blind:avg.blind, exploration:6-avg.unknown};
+    renderRadar(indices);
+
+    lastResults={timestamp:new Date().toISOString(), sums, avg, indices, rawAnswers:Object.fromEntries(answers)};
+
+    resultCard.style.display='block';
+    resultCard.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  function setMeter(name,pct,text){
+    document.getElementById('m'+name).style.width=pct+'%';
+    document.getElementById('s'+name).textContent=text;
+  }
+
+  function buildSummary(avg,sums){
+    const openness=avg.open, defense=avg.hidden, blindspot=avg.blind, exploration=6-avg.unknown;
+    let archetype="均衡成長型";
+    if(openness>=4 && defense<3.2 && blindspot<3.2) archetype="透明協作型";
+    else if(defense>=4 && openness<3.6) archetype="防衛內斂型";
+    else if(blindspot>=4) archetype="盲點成長型";
+    else if(openness<3.2 && exploration>=3.6) archetype="探索潛能型";
+
+    const adv=[];
+    if(openness<3.6)   adv.push("練習『情緒+需求』表達：如「我感到____，因為我需要____」。");
+    if(defense>=3.6)   adv.push("找一位信任對象，小範圍分享一件心事，逐步降低防衛。");
+    if(blindspot>=3.6) adv.push("每月一次 360 回饋，請 3 位熟悉你的人各給 1 條具體建議。");
+    if(exploration<3.6)adv.push("做 14 天微挑戰（每天 15 分鐘）探索一個新領域。");
+
+    const chips = \`
+      <div class="tag" style="margin:8px 0 2px">你的指數（1～5）：</div>
+      <div class="pill">開放 ${openness.toFixed(2)}</div>
+      <div class="pill">防衛 ${defense.toFixed(2)}</div>
+      <div class="pill">盲點 ${blindspot.toFixed(2)}</div>
+      <div class="pill">探索 ${exploration.toFixed(2)}</div>\`;
+
+    const suggest = adv.length
+      ? \`<div class="tips" style="margin-top:10px"><strong>行動建議：</strong><ol>${adv.map(a=>\`<li>${a}</li>\`).join('')}</ol></div>\`
+      : \`<div class="tips" style="margin-top:10px">整體相當不錯！保持開放分享，持續以小步快跑探索未知。</div>\`;
+
+    return \`
+      <p>你的整體傾向為 <strong>「${archetype}」</strong>。</p>
+      ${chips}
+      <p style="margin:10px 0 6px"><strong>解讀：</strong>開放越高代表越透明、越容易建立信任；防衛與盲點越高代表需要加強信任與覺察；探索越高代表未知區縮小、潛能被開發。</p>
+      ${suggest}
+      <p class="tag" style="margin-top:6px">（計分：各象限滿分 50；平均 = 總分 ÷ 10。探索 = 6 − 未知平均。）</p>\`;
+  }
+
+  function renderRadar(data){
+    const ctx=document.getElementById('radarChart');
+    if(radarInstance){radarInstance.destroy();}
+    radarInstance=new Chart(ctx,{
+      type:'radar',
+      data:{labels:['開放','防衛','盲點','探索'],datasets:[{label:'指數（0～5）',data:[data.open,data.defense,data.blind,data.exploration],fill:true,backgroundColor:'rgba(110,183,255,0.20)',borderColor:'rgba(110,183,255,0.95)',pointBackgroundColor:'#e9ecff',pointBorderColor:'rgba(110,183,255,1)'}]},
+      options:{responsive:true,scales:{r:{min:0,max:5,ticks:{stepSize:1,color:'#a9b0d9'},grid:{color:'rgba(255,255,255,.15)'},angleLines:{color:'rgba(255,255,255,.18)'},pointLabels:{color:'#e9ecff',font:{size:12}}}},plugins:{legend:{labels:{color:'#e9ecff'}},tooltip:{callbacks:{label:(ctx)=>\`${ctx.label}: ${ctx.formattedValue}\`}}}}
+    });
+  }
+
+  // ---- 匯出（PNG / PDF / JSON） ----
+  document.getElementById('btnPng').addEventListener('click', async ()=>{
+    if(!lastResults){ alert('請先完成測驗。'); return; }
+    resultCard.scrollIntoView({behavior:'instant', block:'start'});
+    const canvas = await html2canvas(resultCard,{scale:2,backgroundColor:null});
+    const dataURL = canvas.toDataURL('image/png');
+    downloadURI(dataURL, filenameBase()+'.png');
+  });
+
+  document.getElementById('btnPdf').addEventListener('click', async ()=>{
+    if(!lastResults){ alert('請先完成測驗。'); return; }
+    const { jsPDF } = window.jspdf;
+    const canvas = await html2canvas(resultCard,{scale:2,backgroundColor:'#0f1220'});
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p','mm','a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const imgWidth = pageWidth - 20;
+    const imgHeight = canvas.height * imgWidth / canvas.width;
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    if(imgHeight <= pageHeight - 20){
+      pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+    }else{
+      const pxPerMm = canvas.width / imgWidth;
+      let remaining = imgHeight;
+      let sY = 0;
+      const pageContentPx = (pageHeight - 20) * pxPerMm;
+      while(remaining > 0){
+        const pageCanvas = document.createElement('canvas');
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = Math.min(pageContentPx, canvas.height - sY);
+        const ctx = pageCanvas.getContext('2d');
+        ctx.drawImage(canvas, 0, sY, canvas.width, pageCanvas.height, 0, 0, canvas.width, pageCanvas.height);
+        const pageImg = pageCanvas.toDataURL('image/png');
+        pdf.addImage(pageImg, 'PNG', 10, 10, imgWidth, pageCanvas.height / pxPerMm);
+        remaining -= pageCanvas.height / pxPerMm;
+        sY += pageCanvas.height;
+        if(remaining > 0) pdf.addPage();
+      }
+    }
+    pdf.save(filenameBase()+'.pdf');
+  });
+
+  document.getElementById('btnJson').addEventListener('click', ()=>{
+    if(!lastResults){ alert('請先完成測驗。'); return; }
+    const blob = new Blob([JSON.stringify(lastResults,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    downloadURI(url, filenameBase()+'.json');
+    URL.revokeObjectURL(url);
+  });
+
+  function filenameBase(){
+    const d = new Date();
+    const pad = n => String(n).padStart(2,'0');
+    const stamp = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+    return `元氣精神_周哈里窗_${stamp}`;
+  }
+  function downloadURI(uri, name){ const a=document.createElement('a'); a.href=uri; a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
+
+  renderPage();
+  </script>
+</body>
+</html>
